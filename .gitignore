@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
+# secret stuff
+client_secret.json
 
 # C extensions
 *.so
@@ -102,3 +104,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Api key
+key

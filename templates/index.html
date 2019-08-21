@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <title>Sentiment app</title>
+    <style>
+        body {
+            background-color: aqua;
+            overflow: hidden;
+        }
+
+        .invisible {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        #form {
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 300px;
+        }
+
+        #helpbtn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        #helpText {
+            display: none;
+        }
+
+        /* .message{
+            position:absolute;
+            top:20px;
+            right:20px;
+        } */
+    </style>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="ui disabled dimmer" id="loader">
+        <div class="ui text loader">Loading...</div>
+    </div>
+    <form action="/analysis" method="POST" id="form" class="ui big form">
+        <div class="field animated bounceInDown">
+            <label>Please enter the link of your video</label>
+            <div class="ui labeled action input" id="inputArea">
+                <div class="ui label">
+                    https://
+                </div>
+                <input type="text" placeholder="url" name="url">
+                <button type="button" class="ui teal animated button" onclick="validate()">
+                    <div class='visible content'>
+                        analyse
+                    </div>
+                    <div class="hidden content">
+                        <i class="chart bar icon"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="ui error message" id="errContainer">
+                <i class="close icon" onclick="exit()" id="closeIcon"></i>
+                <div class="header" id="errmsg"></div>
+            </div>
+        </div>
+    </form>
+    <a href="https://github.com/JettChenT/CommentAnalysis_En" class="circular ui icon button white" id="helpbtn">
+        <i class="question icon"></i>
+    </a>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+
+    <script>
+
+    </script>
+    <script>
+        $('#helpbtn').transition('fly up in');
+        $("#helpbtn").hover(
+            function(){
+                $('#helpbtn').transition("set looping")
+                $('#helpbtn').transition('jiggle','1000ms')
+            },
+            function(){
+                $('#helpbtn').transition("remove looping")
+            }
+        )
+        var expression = /(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/i;
+        var regex = new RegExp(expression)
+        errmsg = document.getElementById("errmsg")
+        form = document.getElementById("form")
+        errContainer = document.getElementById("errContainer")
+        function exit() {
+            errContainer.className = "ui err message animated flipOutX"
+        }
+        function validate() {
+            url = form.url.value
+            if (url == "") {
+                form.className = "ui big form error"
+                errContainer.className = "ui error message animated flipInX"
+                errmsg.innerHTML = "You didn't enter a url"
+            } else if (!url.match(regex)) {
+                form.className = "ui big form error"
+                errContainer.className = "ui error message animated flipInX"
+                errmsg.innerHTML = "Please enter a valid url"
+            } else if(url.search('http')!=-1){
+                form.className = "ui big form error"
+                errContainer.className = "ui error message animated flipInX"
+                errmsg.innerHTML = "Please enter a valid url"
+            } else if (url.search("youtu") < 0) {
+                form.className = "ui big form error"
+                errContainer.className = "ui error message animated flipInX"
+                errmsg.innerHTML = "Unsupported url"
+            } else {
+                form.className = "ui big form"
+                inputArea.className = "ui labeled action input"
+                errContainer.className = "ui error message animated hinge"
+                loader.className = "ui active dimmer"
+                form.submit()
+            }
+        }
+    </script>
+</body>
+
+</html>
